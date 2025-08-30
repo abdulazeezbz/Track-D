@@ -1,7 +1,9 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
+import Fontisto from '@expo/vector-icons/Fontisto';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
@@ -9,12 +11,16 @@ import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useEffect, useState } from "react";
-import { Dimensions, Image, Keyboard, Modal, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, TouchableWithoutFeedback, ImageBackground, Keyboard, Modal, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
   const [profileM, setProfileM] = useState(false);
   const [profileP, setProfileP] = useState(false);
+  const [VideoCall, setVideoCall] = useState(false); 
   const [isEditable, setIsEditable] = useState(false); 
+  const [face, setFace] = useState(true)
+
+
   const [text, setText] = useState("Default text");
 
   const [chatBox, setChatBox] = useState(false);
@@ -81,6 +87,155 @@ export default function HomeScreen() {
         </View>
       </View>
 
+
+
+
+
+
+{/* Options Modal */}
+<Modal
+  visible={profileM}
+  animationType="fade"
+  transparent
+  onRequestClose={() => setProfileM(false)}
+  onDismiss={() => setProfileM(false)}
+>
+  <TouchableWithoutFeedback onPress={() => setProfileM(false)}>
+    <View style={styles.overlay}>
+      <View style={styles.profileMCWrapper}>
+        <TouchableOpacity
+          onPress={() => {
+            setProfileP(true);
+            setProfileM(false);
+          }}
+          style={styles.profileMC}
+        >
+          <Text>My Profile</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </TouchableWithoutFeedback>
+</Modal>
+
+
+{/* Profile Modal */}
+<Modal
+  visible={profileP}
+  animationType="slide"
+  onRequestClose={() => {
+    setProfileP(false)
+    setIsEditable(false)
+  }}
+  onDismiss={() => {setProfileP(false)
+    setIsEditable(false)
+  }}
+>
+  <View style={styles.profilePG}>
+    
+    {/* Header */}
+    <View style={styles.headHome}>
+      <TouchableOpacity onPress={() => {setProfileP(false)
+        setIsEditable(false)
+      }} style={styles.btnPD}>
+        <Feather name="chevron-left" size={24} color="black" />
+      </TouchableOpacity>
+
+      <Text style={styles.headtitle}>My profile</Text>
+
+      <TouchableOpacity onPress={handlePress} style={[styles.btnPD, styles.btnT]}>
+        <Text>{isEditable ? "Save" : "Edit"}</Text>
+      </TouchableOpacity>
+    </View>
+
+    <View style={styles.hr} />
+
+    {/* Profile Info */}
+    <View style={styles.profile}>
+      <Image
+        style={[styles.userChatIcon, styles.profPic]}
+        source={{ uri: "https://abzdevs.vercel.app/images/abz.jpg" }}
+      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View>
+          <Text style={styles.fontProfName}>AbdulAzeez Sani</Text>
+          <Text style={styles.spn}>(219)555-948-9474</Text>
+        </View>
+        {isEditable && (
+          <TouchableOpacity style={{ marginLeft: 8 }}>
+            <Entypo name="pencil" size={18} color="black" style={styles.spn} />
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
+
+    <View style={styles.hr} />
+
+    {/* Bio */}
+    <View style={styles.info}>
+      <View>
+        <Text>Hello Im AbdoulAzeez Abz!</Text>
+        <Text style={styles.spn}>August 5 2025</Text>
+      </View>
+      {isEditable && (
+        <TouchableOpacity>
+          <Entypo name="pencil" size={19} color="black" style={[styles.searchbox, styles.spn]} />
+        </TouchableOpacity>
+      )}
+    </View>
+
+    <View style={styles.hr} />
+
+    {/* Country */}
+    <View style={[styles.info, styles.country]}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <FontAwesome5
+          name="globe-africa"
+          size={17}
+          color="black"
+          style={styles.searchIcon}
+        />
+        <Text> Country</Text>
+        {isEditable && (
+          <TouchableOpacity>
+            <Entypo name="pencil" size={18} color="black" style={[styles.searchbox, styles.spn]} />
+          </TouchableOpacity>
+        )}
+      </View>
+      <Image
+        style={[styles.userChatIcon, styles.couun]}
+        source={{
+          uri: "https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/nigeria-flag-round-circle-icon.png",
+        }}
+      />
+    </View>
+
+    <View style={styles.hr} />
+
+    {/* Email + Website */}
+    <View style={styles.info}>
+      <View>
+        <View style={[styles.searchbox, styles.normalInput]}>
+          <Fontisto name="email" size={14} color="black" style={styles.searchIcon} />
+          <TextInput editable={false} value="trackd10@gmail.com" style={styles.searchInput} />
+        </View>
+        <View style={[styles.searchbox, styles.normalInput]}>
+          <Entypo name="network" size={17} color="black" style={styles.searchIcon} />
+          <TextInput editable={false} value="www.trackd.live" style={styles.searchInput} />
+        </View>
+      </View>
+      {isEditable && (
+        <TouchableOpacity>
+          <Entypo name="pencil" size={18} color="black" style={[styles.searchbox, styles.spn]} />
+        </TouchableOpacity>
+      )}
+    </View>
+
+  </View>
+</Modal>
+
+
+
+
       {/* Chat List */}
       <ScrollView style={styles.chatHist}>
         {[
@@ -125,7 +280,7 @@ export default function HomeScreen() {
               <Text style={[styles.headtitle, styles.chatPersName]}>User name</Text>
             </View>
             <View style={styles.chatHead}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=> setVideoCall(true) }>
                 <MaterialIcons name="video-call" size={18} color="black" style={styles.chatHeadIcon} />
               </TouchableOpacity>
               <TouchableOpacity>
@@ -243,6 +398,96 @@ export default function HomeScreen() {
           )}
         </View>
       </Modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* VIDEO CALL PAGE */}
+      <Modal animationType='fade' onRequestClose={()=> setVideoCall(false)} visible={VideoCall}>
+        <View style={styles.videoCall}>
+          <ImageBackground style={styles.videoBG} 
+          source={
+              face
+      ? require("../../assets/images/street.jpg")
+      : require("../../assets/images/facetime.jpg")
+          }
+          >
+            <View style={styles.topVideo}>
+              <View>
+                <Text style={styles.usName}>AbdulAzeez Bello</Text>
+                <Text style={[styles.usName, styles.ustime]}>02:34:3s</Text>
+              </View>
+              <View>
+              <Image style={styles.imageUs} 
+              source={require("../../assets/images/user.jpg")} />
+              </View>
+            </View>
+
+
+
+            <View style={styles.transBox}>
+             <View> 
+              <Text style={[styles.textMini, styles.fontBold]}>Transcript </Text>
+              <Text style={styles.textMini}>Hello </Text>
+              <Text style={styles.textMini}>How are u </Text>
+              <Text style={styles.textMini}>im Fine </Text>
+               </View>
+               
+                 <View><Image
+        style={[styles.couun, styles.transs]}
+        source={{
+          uri: "https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/nigeria-flag-round-circle-icon.png",
+        }}
+      /></View>
+
+
+            </View>
+
+
+
+
+            <View style={styles.callActions}>
+              <TouchableOpacity>
+                <Entypo name="light-up" style={[styles.SendChatIcon, styles.btnActions]}  size={23} color="white" />
+                <Text  style={styles.cent}>Effects</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity>
+                <FontAwesome name="microphone-slash" style={[styles.SendChatIcon, styles.btnActions]}  size={23} color="white" />
+                <Text  style={styles.cent}>Mute</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={()=>{
+                if (face) {
+                  setFace(false)
+                }else{
+                  setFace(true)
+                }
+              }}>
+                <Ionicons name="camera-reverse-sharp" style={[styles.SendChatIcon, styles.btnActions]}  size={23} color="white" />
+                <Text style={styles.cent}>Flip</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={()=>{
+                setVideoCall(false)
+              }}>
+                <AntDesign name="close" style={[styles.SendChatIcon, styles.btnActions, styles.dangerBTN]}  size={23} color="white" />
+                <Text style={styles.cent}>End</Text>
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -306,7 +551,26 @@ const styles = StyleSheet.create({
     marginRight:7,
     padding:15,
   },
+  profileMCWrapper: {
+  backgroundColor: "white",
+  borderRadius: 10,
+  padding: 20,
+  position:"absolute",
+  top:0,
+  right:10
+},
+  hr:{ height:1, marginVertical:20, width:"100%", backgroundColor:"rgba(243, 189, 39, 1)" },
 
+  fontProfName:{ fontSize:20, color:"rgba(0,0,0)", marginTop:10, fontWeight:"500" }, spn:{ color:"rgba(0,0,0, 0.6)" },
+  profile:{ justifyContent:"center", alignItems:"center" }, profPic:{ width:100, height:100, marginTop:20 },
+  info:{ paddingHorizontal:20, flexDirection:"row", justifyContent:"space-between", alignItems:"center" },
+country:{ flexDirection:"row", justifyContent:"space-between", alignItems:"center" }, couun:{ width:30, height:30 }, normalInput:{ backgroundColor:"transparent", borderWidth:1, borderColor:"rgba(0,0,0, 0.4)", borderRadius:7 },
+  btnT:{ backgroundColor:"rgba(235, 204, 102, 1)", height:30, borderRadius:10, justifyContent:"center", alignItems:"center", },
+
+  overlay:{ flex: 1, justifyContent: 'center', alignItems: 'center' },
+
+  
+  profileMC:{ backgroundColor:"rgba(235, 204, 102, 1)", height:30, borderRadius:10, width:80, justifyContent:"center", alignItems:"center", position:"absolute", right:25, top:28, },
   btnbtnholder:{
     alignItems:"center"
   },
@@ -315,6 +579,101 @@ const styles = StyleSheet.create({
     fontSize:12,
     paddingTop:3,
     color:"rgba(0,0,0,0.7)",
+  },
+
+  videoCall:{
+    flex:1,
+    width:"100%",
+    backgroundColor:"rgba(235, 204, 102, 1)",
+  },
+
+  videoBG:{
+    width:"100%",
+    height:"100%"
+  },
+
+  topVideo:{
+    flexDirection:"row",
+    justifyContent:"space-around",
+    padding:20,
+    alignItems:"center",
+    borderBottomRightRadius:20,
+    borderBottomLeftRadius:20,
+    backgroundColor:"rgba(235, 204, 102, 0.1)"
+  },
+  imageUs:{
+    width:90,
+    height:90,
+    borderRadius:10,
+    borderWidth:2,
+    borderColor:"white"
+  },
+  usName:{
+    fontSize:18,
+    paddingTop:10,
+    color:"white"
+  },
+
+  ustime:{
+    fontSize:12,
+    padding:0,
+    marginTop:-10
+  },
+
+
+  transBox:{
+    position:"absolute",
+    left:20,
+    flexDirection:"row",
+    justifyContent:"space-around",
+    alignItems:"flex-start",
+    padding:5,
+    bottom:"20%",
+    height:100,
+    width:150,
+    borderRadius:10,
+    backgroundColor:"rgba(235, 204, 102, 1)"
+  },
+
+  transs:{
+    width:20,
+    height:20,
+  },
+
+  textMini:{
+    fontSize:12,
+  },
+
+  callActions:{
+    width:"100%",
+    height:"18%",
+    flexDirection:"row",
+    justifyContent:"space-around",
+    position:"absolute",
+    bottom:0,
+    backgroundColor:"rgba(0, 0, 0, 0.66)",
+    alignItems:"center",
+    borderTopRightRadius:20,
+    borderTopLeftRadius:20,
+    // textAlign:"center"
+    // alignContent:"center"
+  },
+
+  btnActions:{
+    color:"white",
+    backgroundColor:"rgba(255, 255, 255, 0.28)"
+    // padding:30
+  },
+
+  dangerBTN:{
+    backgroundColor:"red"
+  },
+
+  cent:{
+    textAlign:"center",
+    color:"white",
+    fontSize:11,
+    marginTop:4
   }
 
 
