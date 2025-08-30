@@ -11,14 +11,20 @@ import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useEffect, useState } from "react";
-import { Dimensions, Image, TouchableWithoutFeedback, ImageBackground, Keyboard, Modal, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Switch,Dimensions, Image, TouchableWithoutFeedback, ImageBackground, Keyboard, Modal, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
   const [profileM, setProfileM] = useState(false);
   const [profileP, setProfileP] = useState(false);
+  const [BlockM, setBlockM] = useState(false);
   const [VideoCall, setVideoCall] = useState(false); 
   const [isEditable, setIsEditable] = useState(false); 
+  const [AnotherProfile, setAnotherProfile] = useState(false); 
   const [face, setFace] = useState(true)
+
+    const [isEnabled, setIsEnabled] = useState(false);
+
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
 
   const [text, setText] = useState("Default text");
@@ -56,6 +62,9 @@ export default function HomeScreen() {
       setButtonPanel(true);
     }
   };
+
+
+
 
   return (
     <SafeAreaView style={styles.Container}>
@@ -236,6 +245,178 @@ export default function HomeScreen() {
 
 
 
+
+
+
+
+
+
+
+{/* Profile Modal */}
+<Modal
+  visible={AnotherProfile}
+  animationType="slide"
+  onRequestClose={() => {
+    setAnotherProfile(false)
+  }}
+  onDismiss={() => {setAnotherProfile(false)
+  }}
+>
+  <ScrollView style={styles.profilePG}>
+    
+    {/* Header */}
+    <View style={styles.headHome}>
+      <TouchableOpacity onPress={() => {setAnotherProfile(false)
+      }} style={styles.btnPD}>
+        <Feather name="chevron-left" size={24} color="black" />
+      </TouchableOpacity>
+
+      <Text style={styles.headtitle}>Profile</Text>
+
+      <TouchableOpacity style={[styles.btnPD, styles.btnT]}>
+        <SimpleLineIcons name="options-vertical" size={17} color="black" />
+      </TouchableOpacity>
+    </View>
+
+    <View style={styles.hr} />
+
+    {/* Profile Info */}
+    <View style={styles.profile}>
+      <Image
+        style={[styles.userChatIcon, styles.profPic]}
+        source={{ uri: "https://abzdevs.vercel.app/images/abz.jpg" }}
+      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View>
+          <Text style={styles.fontProfName}>AbdulAzeez Sani</Text>
+          <Text style={styles.spn}>(219)555-948-9474</Text>
+        </View>
+        {isEditable && (
+          <TouchableOpacity style={{ marginLeft: 8 }}>
+            <Entypo name="pencil" size={18} color="black" style={styles.spn} />
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
+
+    <View style={styles.hr} />
+
+    {/* Bio */}
+    <View style={styles.info}>
+      <View>
+        <Text>Hello Im AbdoulAzeez Abz</Text>
+        <Text style={styles.spn}>August 5 2025</Text>
+      </View>
+      {isEditable && (
+        <TouchableOpacity>
+          <Entypo name="pencil" size={19} color="black" style={[styles.searchbox, styles.spn]} />
+        </TouchableOpacity>
+      )}
+    </View>
+
+    <View style={styles.hr} />
+
+    {/* Country */}
+    <View style={[styles.info, styles.country]}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <FontAwesome5
+          name="globe-africa"
+          size={17}
+          color="black"
+          style={styles.searchIcon}
+        />
+        <Text> Mute notification</Text>
+        {isEditable && (
+          <TouchableOpacity>
+            <Entypo name="pencil" size={18} color="black" style={[styles.searchbox, styles.spn]} />
+          </TouchableOpacity>
+        )}
+      </View>
+      <Text style={styles.label}>{isEnabled ? "Enabled" : "Disabled"}</Text>
+      <Switch
+        trackColor={{ false: "#767577", true: "#f5dd4b" }}
+        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+      />
+
+    </View>
+
+        {/* Country */}
+    <View style={[styles.info, styles.country, {marginTop:5}]}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <FontAwesome5
+          name="globe-africa"
+          size={17}
+          color="black"
+          style={styles.searchIcon}
+        />
+        <Text> Country</Text>
+        {isEditable && (
+          <TouchableOpacity>
+            <Entypo name="pencil" size={18} color="black" style={[styles.searchbox, styles.spn]} />
+          </TouchableOpacity>
+        )}
+      </View>
+      <Image
+        style={[styles.userChatIcon, styles.couun]}
+        source={{
+          uri: "https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/nigeria-flag-round-circle-icon.png",
+        }}
+      />
+
+    </View>
+
+
+    
+
+    <View style={styles.hr} />
+
+    {/* Email + Website */}
+    <View style={styles.info}>
+      <View>
+        <View style={[styles.searchbox, styles.normalInput]}>
+          <Fontisto name="email" size={14} color="black" style={styles.searchIcon} />
+          <TextInput editable={false} value="trackd10@gmail.com" style={styles.searchInput} />
+        </View>
+        <View style={[styles.searchbox, styles.normalInput]}>
+          <Entypo name="network" size={17} color="black" style={styles.searchIcon} />
+          <TextInput editable={false} value="www.trackd.live" style={styles.searchInput} />
+        </View>
+      </View>
+      {isEditable && (
+        <TouchableOpacity>
+          <Entypo name="pencil" size={18} color="black" style={[styles.searchbox, styles.spn]} />
+        </TouchableOpacity>
+      )}
+    </View>
+
+    <View style={styles.hr}></View>
+
+   <View style={styles.mnnn}>
+  {/* Block Contact */}
+  <TouchableOpacity onPress={() => setBlockM(true)} style={styles.optionBtn}>
+    {/* <MaterialCommunityIcons name="cancel" size={18} color="red" /> */}
+    <Text style={styles.mntt}> Block Contact</Text>
+  </TouchableOpacity>
+
+  {/* Report Contact */}
+  <TouchableOpacity onPress={() => setBlockM(true)} style={styles.optionBtn}>
+    {/* <AntDesign name="dislike2" size={18} color="red" /> */}
+    <Text style={styles.mntt}> Report Contact</Text>
+  </TouchableOpacity>
+</View>
+
+
+     
+
+  </ScrollView>
+</Modal>
+
+
+
+
       {/* Chat List */}
       <ScrollView style={styles.chatHist}>
         {[
@@ -275,9 +456,16 @@ export default function HomeScreen() {
                 setChatBox(false)
                 }} style={styles.btnPD}>
                 <Feather name="chevron-left" size={24} color="black" />
-              </TouchableOpacity>
+              </TouchableOpacity>               
+              
+              
+               <TouchableOpacity onPress={()=> setAnotherProfile(true)}>
+                              
               <Image style={[styles.userChatIcon, styles.chatPersPic]} source={{ uri: "https://abzdevs.vercel.app/images/abz.jpg" }}/>
-              <Text style={[styles.headtitle, styles.chatPersName]}>User name</Text>
+              </TouchableOpacity>
+               <TouchableOpacity onPress={()=> setAnotherProfile(true)}>
+                       <Text style={[styles.headtitle, styles.chatPersName]}>User name</Text>
+           </TouchableOpacity>
             </View>
             <View style={styles.chatHead}>
               <TouchableOpacity onPress={()=> setVideoCall(true) }>
@@ -402,6 +590,33 @@ export default function HomeScreen() {
 
 
 
+      {/* Block PAGE */}
+<Modal
+visible={BlockM}
+animationType='slide'
+onRequestClose={()=> setBlockM(false) }
+transparent={true}>
+  <View style={styles.overlayy}>
+    <View style={styles.contt}>
+      <Text style={[styles.fontBold, styles.heee]}>
+        Block and Report This User?
+      </Text>
+
+      <View style={styles.flxx}>
+        <TouchableOpacity onPress={()=> setBlockM(false) }>
+          <Text style={styles.btnnn}>Cancel</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=> setBlockM(false) }>
+          <Text style={[styles.btnnn, styles.active]}>Yes, Block</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </View>
+</Modal>
+
+
+
 
 
 
@@ -424,6 +639,7 @@ export default function HomeScreen() {
           >
             <View style={styles.topVideo}>
               <View>
+
                 <Text style={styles.usName}>AbdulAzeez Bello</Text>
                 <Text style={[styles.usName, styles.ustime]}>02:34:3s</Text>
               </View>
@@ -510,7 +726,7 @@ const styles = StyleSheet.create({
   userChatName:{ fontWeight:"bold", fontSize: 14 },
   userChatmsg:{ color:"rgba(0,0,0,0.6)" },
 
-  profilePG:{ flex:1 },
+  profilePG:{ flex:1, marginBottom:10, },
 
   // Chat Page
   chatHead:{ flexDirection:"row", alignItems:"center"  },
@@ -621,6 +837,12 @@ country:{ flexDirection:"row", justifyContent:"space-between", alignItems:"cente
   },
 
 
+  label: {
+    fontSize: 10,
+    // marginBottom: 10,
+  },
+
+
   transBox:{
     position:"absolute",
     left:20,
@@ -674,6 +896,57 @@ country:{ flexDirection:"row", justifyContent:"space-between", alignItems:"cente
     color:"white",
     fontSize:11,
     marginTop:4
+  },
+  overlayy:{
+    flex:1,
+    backgroundColor:"rgba(0,0,0,0.2)",
+  },
+
+  contt:{
+    width:"100%",
+    height:"20%",
+    backgroundColor:"white",
+    position:"absolute",
+    bottom:0,
+    boxShadow:"2px",
+    borderTopRightRadius:20,
+    borderTopLeftRadius:20,
+    padding:20
+  },
+  heee:{
+    color:"rgba(235, 204, 102, 1)",
+    textAlign:"center",
+    fontSize:17
+  },
+
+  flxx:{
+    flexDirection:"row",
+    justifyContent:"space-around",
+    padding:20,
+  },
+
+  btnnn:{
+    padding:10,
+    backgroundColor:"transparent",
+    width:150,
+    textAlign:"center",
+    borderWidth:2,
+    borderRadius:20,
+    margin:3,
+  },
+
+  active:{
+    color:"white",
+    backgroundColor:"black"
+  },
+  mnnn:{
+    gap:10
+  },
+  mntt:{
+    color:"red",
+    fontWeight:"600",
+    paddingLeft:20,
+    gap:20
   }
 
 
